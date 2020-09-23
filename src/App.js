@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import axios from "axios";
 
-function App() {
+class App extends Component {
+  state = {
+    users: []
+  };
+
+  async componentDidMount() {
+    let result = await axios.get('https://jsonplaceholder.typicode.com/users');
+    this.setState({users: result.data});
+    console.log(this.state.users);
+  }   
+  render() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        <button onClick = {this.getUsers}>GetUsers</button>  
+      }
+      <div>
+        {this.state.users.map(user => (
+          <ul>
+            <li>
+              {user.name}
+            </li>
+          </ul>
+
+        ))}
+      </div>
     </div>
   );
-}
+}}
 
 export default App;
+
+/*getUsers = () => {    
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(response => response.json())
+    .then(json => console.log(json))   
+    console.log(this.state.phArray)
+  }*/
